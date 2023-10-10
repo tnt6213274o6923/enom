@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔍 enom 🔍</title>
+    <link rel="icon" href="https://assets.msn.com/statics/icons/favicon_newtabpage.png" type="image/png" crossorigin="anonymous" sizes="32x32">
+</head>
+<body id="page-top">
+    <h1 translate="no" style="text-align: center ;">enom - paypal Money Generator</h1>
+    
+
+
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta property="og:title" content="PromptPay QR Code Generator สร้างคิวอาร์โค๊ดการชำระเงินผ่านบริการพร้อมเพย์">
+  <meta property="og:site_name" content="">
+  <meta property="og:url" content="">
+  <meta property="og:description" content="แค่มีเบอร์มือถือ, รหัสประจำตัวประชาชน, TAX ID หรือ e-Wallet ก็สามารถโอนเงินผ่านระบบพร้อมเพย์ได้แล้ว">
+  <meta property="og:image" content="./img/meta-screen.png">
+  
+
+  <link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/new-age.min.css">
+  <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/custom.min.css">
+  <link href="favicon.ico" rel="shortcut icon" type="image/x-icon">
+
+
+
+
+  
+
+  
+
+  <section class="text-center" id="generate">
+    <div class="generate-section">
+      <div class="container generate-content">
+        <div class="row generate-form">
+          <div class="col-md-8 mx-auto" style="margin-top:90px;">
+            <form>
+              
+              <div class="form-group error">
+                <label translate="yes" >จำนวนเงิน</label>
+                <input type="number" step="10" class="form-control" id="amount" placeholder="Money 100 - 90000000" translate="yes" >
+              </div>
+              
+              <button type="button" class="btn btn-primary btn-lg" id="myBtn">get QR Code</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body" style="margin: auto;">
+            <div id="qrcode" style="width:250px; height:250px;"></div>
+         
+            
+          <div id="info-show" style="text-align: center; font-size: 70%; margin-top: 10px; color: #A6A6A6;">
+            
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default close-button" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/qrcode.min.js"></script>
+  <script type="text/javascript" src="js/promptpay.js"></script>
+
+  <script src="vendor/popper/popper.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <script src="js/new-age.min.js"></script>
+
+  <script type="text/javascript">
+    var qrcode = new QRCode(document.getElementById("qrcode"), {
+      width: 250,
+      height: 250,
+      correctLevel: QRCode.CorrectLevel.L
+    });
+
+    function makeCode() {
+      var ppID = document.getElementById("pp-id").value;
+      var amount = parseFloat(document.getElementById("amount").value);
+      var acname = document.getElementById("acname").value;
+      if (!ppID) {
+        ppID = "promptpay.github.io";
+      }
+
+      qrcode.makeCode(generatePayload(ppID, amount, acname));
+      $("#pp-id-show").html(ppID);
+      $("#acname-show").html(acname);
+      if (amount > 0.0) {
+        $("#amount-show").html(Number(amount.toFixed(2)).toLocaleString() + " บาท");
+      } else {
+        $("#amount-show").html("");
+      }
+    }
+
+    $(document).ready(function () {
+      $("#myBtn").click(function () {
+        var ppID = document.getElementById("pp-id").value;
+        var amount = parseFloat(document.getElementById("amount").value);
+        var acname = document.getElementById("acname").value;
+        if (ppID == '') {
+          $('#pp-id').addClass('is-invalid')
+        } else {
+          $('#amount').removeClass('is-invalid')
+          $('#pp-id').removeClass('is-invalid')
+          $('#acname').removeClass('is-invalid')
+          makeCode();
+          $("#pp-id").
+          on("blur", function () {
+            makeCode();
+          }).
+          on("keydown", function (e) {
+            if (e.keyCode == 13) {
+              makeCode();
+            }
+          });
+          $("#amount").
+          on("blur", function () {
+            makeCode();
+          }).
+          on("keydown", function (e) {
+            if (e.keyCode == 13) {
+              makeCode();
+            }
+          });
+          $("#acname").
+          on("blur", function () {
+            makeCode();
+          }).
+          on("keydown", function (e) {
+            if (e.keyCode == 13) {
+              makeCode();
+            }
+          });
+          $("#myModal").modal();
+        }
+      });
+    });
+  </script>
+<div class="form-group">
+    <input style="color: white ; background-color: white;" value="1234" type="number" pattern="\d*" class="form-control" id="pp-id"  onkeypress="if(this.value.length==15) return false;" required="">
+  </div>
+  <div class="form-group error">
+    <input value="name" style="color: white ; background-color: white;" type="text" step="0.01" class="form-control" id="acname" >
+</form>
+
+
+
+
+</body></html>
